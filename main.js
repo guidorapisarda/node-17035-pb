@@ -1,31 +1,128 @@
-import Usuario from './Usuario'
+import fs from 'fs';
 
-let usuarios = [];
+class Contenedor{
+    constructor(fileName){
+        this.file = fileName;
+    }
 
-let usuario1 = new Usuario('Juan','Roman');
-let usuario2 = new Usuario('Ricardo','Ruben');
-let usuario3 = new Usuario('Ernesto','Diaz');
-let usuario4 = new Usuario('Elon','Musk');
+    async save(object){
 
-usuarios.push(usuario1,usuario2,usuario3,usuario4);
+        let values = await this.getAll();
+        let id = 1;
+        if (!values){
+            values = [];
+        }else{
+            if(values.length >0){
+                let idList = values.map(element => element.id);
+                id = Math.max(...idList)+1;
+            }   
+        }
+        object["id"]=id;
+        values.push(object);
+        try{
+            await fs.promises.writeFile(this.file,JSON.stringify(values,null,2));
+            return id;
+        }catch(err){
+            console.log('Ocurrió un error inesperado...'+err);
+            return null;
+        }
+    }
 
-usuario1.addMascota('pupi');
+    async getAll(){
+        try {
+            const content = await fs.promises.readFile(this.file, 'utf-8');
+            return JSON.parse(content);
+        } catch (err) {
+            console.log('Ocurrió un error inesperado... ' + err);
+            return null;
+        }
+    }
 
-usuario2.addMascota('pupi2');
+    async getById(id){
+        try{
+            let values = await this.getAll();
+            let result = values.find(elem => elem.id ===id);
+            return result;
+        }catch(err){
+            console.log('Ocurrió un error inesperado... ' + err);
+            return null;
+        }
+    }
 
-usuario3.addMascota('pupi3');
+    async findIndex(id){
+        try{
+            let values = await this.getAll();
+            let resultIndex = values.findIndex(elem => elem.id ===id);
+            return resultIndex;
+        }catch(err){
+            console.log('Ocurrió un error inesperado... ' + err);
+            return null;
+        }
+    }
 
-usuario4.addMascota('pupi4');
+    async deleteById(id){
+        let values = await this.getAll();
+        let indexToDelete = await this.findIndex(id);
+        if (indexToDelete>-1){
+            values.splice(indexToDelete,1);
+            let saved = await this.saveValues(values)
+            if(saved)
+                console.log('se eliminó el elemento con id '+id);
+        }else
+            console.log('No se encontró el elemento con id '+id);
+    }
 
-usuario1.addMascota('pupi5');
+    async saveValues(values){
+        try{
+            await fs.promises.writeFile(this.file,JSON.stringify(values,null,2));
+            return true;
+        }catch(err){
+            console.log('Ocurrió un error inesperado... ' + err);
+            return false;
+        }
+    }
+
+    async deleteAll(){
+        let values = [];
+        if (await this.saveValues(values))
+            console.log('Se eliminaron todos los elementos.');
+    }
+}
 
 
-usuario1.addBook('El senor de los anillos','J.R.R. Tolkin');
-usuario2.addBook('pupi2','pupi3');
-usuario3.addBook('pupi3','pupi4');
-usuario4.addBook('pupi4','pupi5');
-usuario1.addBook('pupi5','pupi6');
+let test = new Contenedor('./productos.txt')
 
-usuarios.forEach(user => {
-    console.log(`${user.getFullName()} y tengo ${user.countMascotas()}. Los libros que me gusta son:\n${getBookNames()}`);
-});
+console.log(await test.save({
+    title: 'Escuadra',
+    price: '16.36',
+    thumbnail: 'https://google.com.ar'
+}))
+console.log(await test.save({
+    title: 'Regla',
+    price: '65.36',
+    thumbnail: 'https://google.com.ar'
+}))
+console.log(await test.save({
+    title: 'Lápiz',
+    price: '6464.1',
+    thumbnail: 'https://google.com.ar'
+}))
+console.log(await test.save({
+    title: 'Lapicera',
+    price: '6868',
+    thumbnail: 'https://google.com.ar'
+}))
+console.log(await test.save({
+    title: '6432.1',
+    price: 'precio',
+    thumbnail: 'https://google.com.ar'
+}))
+
+
+
+console.log('Get element by ID: '+JSON.stringify(await test.getById(1)));
+
+console.log(await test.getAll());
+await test.deleteById(4);
+console.log(await test.getAll());
+await test.deleteAll();
