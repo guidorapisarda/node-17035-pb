@@ -119,7 +119,6 @@ console.log(await test.save({
 }))
 
 
-
 console.log('Get element by ID: '+JSON.stringify(await test.getById(1)));
 
 console.log(await test.getAll());

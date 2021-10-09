@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Aplicacion de NodeJS hecha para la cursada 17035 de CoderHouse.",
   "main": "main.js",
+  "type":"module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
