@@ -1,6 +1,6 @@
 import fs from 'fs';
 
-class Contenedor{
+export class Contenedor{
     constructor(fileName){
         this.file = fileName;
     }
@@ -88,40 +88,3 @@ class Contenedor{
             console.log('Se eliminaron todos los elementos.');
     }
 }
-
-
-let test = new Contenedor('./productos.txt')
-
-console.log(await test.save({
-    title: 'Escuadra',
-    price: '16.36',
-    thumbnail: 'https://google.com.ar'
-}))
-console.log(await test.save({
-    title: 'Regla',
-    price: '65.36',
-    thumbnail: 'https://google.com.ar'
-}))
-console.log(await test.save({
-    title: 'Lápiz',
-    price: '6464.1',
-    thumbnail: 'https://google.com.ar'
-}))
-console.log(await test.save({
-    title: 'Lapicera',
-    price: '6868',
-    thumbnail: 'https://google.com.ar'
-}))
-console.log(await test.save({
-    title: '6432.1',
-    price: 'precio',
-    thumbnail: 'https://google.com.ar'
-}))
-
-
-console.log('Get element by ID: '+JSON.stringify(await test.getById(1)));
-
-console.log(await test.getAll());
-await test.deleteById(4);
-console.log(await test.getAll());
-await test.deleteAll();

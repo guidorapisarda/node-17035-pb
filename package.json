@@ -1,9 +1,9 @@
 {
-  "name": "node-17035-pb",
+  "name": "17035-pb",
   "version": "1.0.0",
   "description": "Aplicacion de NodeJS hecha para la cursada 17035 de CoderHouse.",
   "main": "main.js",
-  "type":"module",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -16,5 +16,9 @@
   "bugs": {
     "url": "https://github.com/guidorapisarda/node-17035-pb/issues"
   },
-  "homepage": "https://github.com/guidorapisarda/node-17035-pb#readme"
+  "homepage": "https://github.com/guidorapisarda/node-17035-pb#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {}
 }
