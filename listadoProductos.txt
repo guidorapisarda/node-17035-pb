@@ -1,0 +1,8 @@
+[
+  {
+    "nombre": "asd",
+    "precio": "asd",
+    "foto": "asd",
+    "id": 2
+  }
+]
