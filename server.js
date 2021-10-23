@@ -1,12 +1,10 @@
 import express from 'express';
-import {Contenedor} from './Contenedor.js';
 const app = express();
+
 const PORT = 8080;
-
-let productos=null;
-
 const server = app.listen(PORT, () => {
-    productos = new Contenedor('./productos.txt');
+    app.use(express.json());
+    app.use(express.urlencoded({extended:true}));
     console.log(`Servidor http escuchando en el puerto ${server.address().port}`)
  }); 
 
@@ -20,38 +18,21 @@ const server = app.listen(PORT, () => {
      res.send(await productos.getAll());
  })
 
- app.get('/agregarProductos', async (req,res) => {
-    let ids = [];
-    ids.push(await productos.save({
-        title: 'Escuadra',
-        price: '16.36',
-        thumbnail: 'https://google.com.ar'
-    }))
-    ids.push(await productos.save({
-        title: 'Regla',
-        price: '65.36',
-        thumbnail: 'https://google.com.ar'
-    }))
-    ids.push(await productos.save({
-        title: 'Lápiz',
-        price: '6464.1',
-        thumbnail: 'https://google.com.ar'
-    }))
-    ids.push(await productos.save({
-        title: 'Lapicera',
-        price: '6868',
-        thumbnail: 'https://google.com.ar'
-    }))
-    ids.push(await productos.save({
-        title: '6432.1',
-        price: 'precio',
-        thumbnail: 'https://google.com.ar'
-    }))
+ app.get('/api/sumar/:num1/:num2', async (req,res) => {
+    let {num1,num2} = req.params;
 
-    res.send('Se agregaron productos.'+JSON.stringify(ids));
+    res.send(Number(num1)+Number(num2));
  })
 
- app.get('/productoRandom',async (req,res)=>{
-     let prods = await productos.getAll();
-     res.send(prods[Math.floor(Math.random()*prods.length)]);
+ app.get('/api/sumar',(req,res)=>{
+     try{
+    let {num1,num2} = req.query;
+    num1 =  Number(num1);
+    num2 =  Number(num2);
+    let suma = num1+num2;
+    res.send({suma});
+    }catch(err){
+        console.log(err);
+        res.send('hola')
+    }
  });
