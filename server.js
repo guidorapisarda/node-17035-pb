@@ -18,3 +18,11 @@ app.use(express.static('public'));
 app.use('/api/productos',productosRouter);
 //Rutas de carrito
 app.use('/api/carrito',carritoRouter);
+
+//Capturo todas las rutas que no fueron definidas y muestro un mensaje de error custom.
+app.use((req, res, next) => {
+    res.status(404).send({
+    status: 404,
+    error: 'Not found'
+    })
+})
