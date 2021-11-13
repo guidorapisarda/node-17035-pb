@@ -6,7 +6,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
 const PORT = 8080;
-const server = app.listen(PORT, () => {
+const server = app.listen(process.env.PORT || PORT, () => {
     console.log(`Servidor http escuchando en el puerto ${server.address().port}`)
 });
 
@@ -25,4 +25,4 @@ app.use((req, res, next) => {
     status: 404,
     error: 'Not found'
     })
-})
+});
