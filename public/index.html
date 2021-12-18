@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <title>Document</title>
 </head>
 <body>
@@ -13,5 +14,31 @@
         <input type="text" name="foto">
         <button type="submit">presionar para enviar</button>
     </form>
+    <h2>Handlebars!!</h2>
+    <div id="handlebars"></div>
+    <script src="./handlebars.js"></script>
+    <script>
+        
+        let textToRender = `
+        <h1>Datos Personales</h1>
+        <ul>
+            <li>{{nombre}}</li>
+            <li>{{apellido}}</li>
+            <li>{{edad}}</li>
+            <li>{{email}}</li>
+            <li>{{telefono}}</li>
+        </ul>`;
+        let data = {
+            nombre: 'Guido',
+            apellido: 'Rapisarda',
+            edad: 28,
+            email: 'guidorapi@asd.com',
+            telefono: 123456123
+        }
+        const template = Handlebars.compile(textToRender);
+        const html = template(data);
+        document.querySelector('div').innerHTML=html;
+    </script>
+
 </body>
 </html>
